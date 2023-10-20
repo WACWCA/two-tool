@@ -1,0 +1,94 @@
+.App {
+  text-align: center;
+  /* background-color: #f6f6f6 !important; */
+  height: 100vh;
+  font-family: "Helvetica" !important;
+  background-color: #fafafa;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.card {
+  border: 2px solid !important;
+  border-color: #E7EDF3 !important;
+  box-shadow: none !important;
+  /* border-radius: 16; */
+  transition: 0.4s;
+  background-color: #fafafa;
+  /* border-color: attr(data-color) !important; */
+  /* border-color: var(--color) !important; */
+}
+
+.card:hover {
+  /* border-color:  #5B9FED !important; */
+}
+
+.method  {
+  font-weight: bold !important;
+  /* font-size: 1.25rem !important; */
+  /* color: '#122740'; */
+  font-family: 'Helvetica';
+}
+
+.solutionCard {
+  background-color: #fafafa;
+}
+
+.move-text {
+
+}
+
+.subset {
+  color: #8D9CAD;
+  text-transform: capitalize;
+  font-size: 0.9 rem;
+  font-weight: 550;
+}
+
+.circle {
+  /* border: red; */
+  background-color: #FFFFFF;
+  border: 2px solid red;
+  height: 8px;
+  width: 8px;
+  max-width: 8px;
+  max-height: 8px;
+  border-radius: 50%;
+  /* height: 100px; */
+  /* -moz-border-radius:75px;
+  -webkit-border-radius: 75px; */
+  /* width: 100px; */
+}
