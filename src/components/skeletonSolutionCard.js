@@ -1,48 +1,29 @@
-import { Avatar, Card, CardOverflow, Chip, Link, Sheet, Stack, Typography } from "@mui/joy";
+import { Avatar, Box, Card, CardOverflow, Chip, Link, Sheet, Skeleton, Stack, Typography } from "@mui/joy";
 import { METHODS } from "../util/constants";
 import { useTheme } from "@mui/joy";
 
-const SolutionCard = ({color, subset, inspection, face, alg, method, depth, algNumber, methodGroup, score, faceScore}) => {
-    // const useCardHeaderStyles = {
-    //     border: '2px solid',
-    //     borderColor: '#E7EDF3',
-    //     transition: '0.4s',
-    //   };
-    const theme = useTheme();
-    // console.log(theme);
-    
-    const bgColor = theme.vars.palette[color][500];
-    return (
-        <Card style={{backgroundColor: 'background.level1', overflow: 'hidden'}}>
-            <CardOverflow sx={{
-            maxWidth: '360px',
-            width: '100%',
-            backgroundColor: 'background.level0',
+const SkeletonSolutionCard = () => {
 
+    const theme = useTheme();
+    
+    // const bgColor = theme.vars.palette[color][500];
+    return (
+        <Card sx={{
+            maxWidth: '320px'
         }}>
+            <CardOverflow>
                 <Stack
                 direction="column"
                 justifyContent="flex-start"
                 alignItems="center"
-                width={"100%"}
                 spacing={0}
                 paddingBottom={1}
                 >
-                    <Link
-                        overlay
-                        underline="none"
-                        sx={{ marginTop: '0.25rem !important' }}
-                    >
-                        <Chip
-                        disabled={false}
-                        variant="outlined"
-                    ><Typography level="title-sm">{method} &bull; {subset}</Typography>
-                    </Chip>
-                    </Link>
                     <Stack 
                     direction="column"
                     spacing={0}
                     sx={{ width: '100%'}}
+                    paddingTop={2}
                     >
                         <Stack 
                         direction="row"
@@ -50,13 +31,16 @@ const SolutionCard = ({color, subset, inspection, face, alg, method, depth, algN
                         alignItems="center"
                         >   
                             <Stack direction="row" spacing={1} alignItems="center">
-                                <Sheet className="circle" sx={{borderColor: '#BDBDBD !important'}}></Sheet>
                                 <Typography textTransform='lowercase' level="body-sm">
-                                    {inspection}
+                                    <Skeleton>
+                                        x y
+                                    </Skeleton>
                                 </Typography>
                             </Stack>
                             <Typography level="body-sm">
-                                // inspection {score}
+                                <Skeleton>
+                                    // inspection
+                                </Skeleton>
                             </Typography>
                         </Stack>
                         <Stack 
@@ -65,13 +49,16 @@ const SolutionCard = ({color, subset, inspection, face, alg, method, depth, algN
                         alignItems="center"
                         >
                             <Stack direction="row" spacing={1} alignItems="center">
-                                <Sheet className="circle" sx={{borderColor: bgColor + ' !important', outline: color === 'white' ? '1px solid black' : 'none', backgroundColor: color === 'white' ? 'black !important' : 'none'}}></Sheet>
                                 <Typography level="body-sm">
-                                    {face} {faceScore}
+                                    <Skeleton>
+                                        R U F U R U
+                                    </Skeleton> 
                                 </Typography>
                             </Stack>
                             <Typography level="body-sm">
-                                // { method === METHODS.CLL ? 'layer' : 'face' }
+                                <Skeleton>
+                                    // Layer
+                                </Skeleton>                             
                             </Typography>
                         </Stack>
                         <Stack 
@@ -80,13 +67,16 @@ const SolutionCard = ({color, subset, inspection, face, alg, method, depth, algN
                         alignItems="center"
                         >
                             <Stack direction="row" spacing={1} alignItems="center">
-                                <Sheet className="circle" sx={{backgroundColor: bgColor + ' !important', borderColor: bgColor + ' !important', outline: color === 'white' ? '1px solid black' : 'none'}}></Sheet>
                                 <Typography level="body-sm">
-                                    {alg}
+                                    <Skeleton>
+                                        R U R' U R U' R' U R U' R' F
+                                    </Skeleton> 
                                 </Typography>
                             </Stack>
                             <Typography level="body-sm">
-                                // {method}
+                                <Skeleton>
+                                    // alg
+                                </Skeleton>                             
                             </Typography>
                         </Stack>
                     </Stack>
@@ -96,4 +86,4 @@ const SolutionCard = ({color, subset, inspection, face, alg, method, depth, algN
     );
 };
 
-export default SolutionCard;
+export default SkeletonSolutionCard;

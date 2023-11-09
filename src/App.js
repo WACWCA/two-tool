@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './App.css';
 import SolutionCard from './components/solutionCard';
-import { Alert, Box, Button, Card, CssVarsProvider, Grid, Input, Link, Sheet, Stack, Typography} from '@mui/joy';
+import { Alert, Box, Button, Card, CardContent, CssVarsProvider, FormControl, FormHelperText, FormLabel, Grid, IconButton, Input, Link, Radio, RadioGroup, Sheet, Stack, Typography} from '@mui/joy';
 import { extendTheme, useTheme } from '@mui/joy/styles';
 import { getSolutions } from './util/solver';
 import { TwistyPlayer } from "https://cdn.cubing.net/js/cubing/twisty";
@@ -10,34 +10,65 @@ import FaceColorButton from './components/FaceColorButton';
 import ViewListIcon from '@mui/icons-material/ViewList';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import ViewInArIcon from '@mui/icons-material/ViewInAr';
+import Search from '@mui/icons-material/Search';
+import InfoOutlined from '@mui/icons-material/InfoOutlined';
+
+
 import GridViewIcon from '@mui/icons-material/GridView';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import AlgSorter from './util/algSorter';
+import SkeletonSolutionCard from './components/skeletonSolutionCard';
+import HelpModal from './components/helpModal';
 
 function App() {
   // U' F R' U R' F U F U2
+  const [algSorter, setAlgSorter] = useState(undefined);
   const [solutions, setSolutions] = useState([]);
+
   const [scramble, setScramble] = useState('');
   const [imageScramble, setImageScramble] = useState('');
-  const [selected, setSelected] = useState({
-    'CLL': true,
-    'EG-1': true,
-    'EG-2': true,
-    'LEG-1': true,
-    'TCLL+': true,
-    'TCLL-': true,
-    'LS1': true,
-    'LS2': true,
-    'LS3': true,
-    'LS4': true,
-    'LS5': true,
-    'LS6': true,
-    'LS7': true,
-    'LS8': true,
-    'LS9': true
-  });
+  const [error, setError] = useState(false);
+  const [open, setOpen] = useState(false);
+  const workerRef = useRef();
+  const [selected, setSelected] = useState(
+    () => {
+      const saved = localStorage.getItem("selected");
+      const initialValue = JSON.parse(saved);
+      return initialValue || {
+        'CLL': true,
+        'EG-1': true,
+        'EG-2': true,
+        'LEG-1': true,
+        'TCLL+': true,
+        'TCLL-': true,
+        'LS1': true,
+        'LS2': true,
+        'LS3': true,
+        'LS4': true,
+        'LS5': true,
+        'LS6': true,
+        'LS7': true,
+        'LS8': true,
+        'LS9': true
+      };
+    }
+    );
   
   const [checkedColorList, setCheckedColorList] = useState({white: true, blue: true, green: true, orange: true, red: true, yellow: true});
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  // useEffect(() => {
+  //   const sols = [...redSolutions, ...orangeSolutions, ...greenSolutions, ...blueSolutions, ...yellowSolutions, ...whiteSolutions]
+  //   if (solutions.length > 0) {
+  //       setShouldUpdate(false);
+  //       setLoading(false);
+  //   }  
+  //   setSolutions(sols);    
+  // }, [
+  //   redSolutions, orangeSolutions, greenSolutions, blueSolutions, yellowSolutions, whiteSolutions
+  // ]);
+
   const colorClick = (b, color) => {
     setCheckedColorList({
       ...checkedColorList,
@@ -52,31 +83,105 @@ function App() {
       "ALG": 1
   };
 
-  const [depths, setDepths] = useState(defaultDepths);
+  const [shouldUpdate, setShouldUpdate] = useState(false);
+  const [depths, setDepths] = useState(
+    () => {
+      const saved = localStorage.getItem("depths");
+      const initialValue = JSON.parse(saved);
+      return initialValue || defaultDepths;
+    }
+  );
+
+  const solve = async (scramble) => {
+    worker.postMessage(JSON.stringify({ scramble: scramble, 
+      egDepth: depths['EG'], 
+      tcllDepth: depths['TCLL'], 
+      lsDepth: depths['LS']
+    }));
+  };
+
+  const receiveWorker = (message) => {
+    const workerResponse = JSON.parse(message.data);
+    console.log(workerResponse);
+    workerResponse.sort((a, b) => algSorter.getScore(a) - algSorter.getScore(b));
+
+    setShouldUpdate(false);
+    setLoading(false);
+    setSolutions(workerResponse);
+
+  }
+
+  // useEffect(()=> {
+  //   console.log(solutions.length);
+  //   setShouldUpdate(false);
+  //   setLoading(false);
+  // }, [solutions]);
+
+  const worker = new Worker("worker.js");
+  worker.addEventListener('message', receiveWorker);
+
   const setDepth = (group, depth) => {
-    setDepths(
+    const d = 
         {
             ...depths,
             [group]: depth
         }
-    );
+    ;
+
+    localStorage.setItem('depths', JSON.stringify(d));
+    setDepths(d);
   }
 
+  const setDepthAndSearch = (group, depth) => {
+    const d =
+      {
+          ...depths,
+          [group]: depth
+      }
+    ;
+    localStorage.setItem('depths', JSON.stringify(d));
+    setDepths(d)
+    setShouldUpdate(true);
+  }
+
+  useEffect(() => {
+    if (!algSorter)
+      setAlgSorter(new AlgSorter());
+  }, []);
+
+
+  useEffect(() => {
+    if (shouldUpdate) {
+      setLoading(true);
+      setShouldUpdate(false);
+      const fetchData = async () => {
+        const x = await solve(imageScramble);
+      }
+      fetchData()
+        .catch(console.error);
+    }
+  }, [shouldUpdate]);
+  
   const click = (method) => {
     selected[method] = !selected[method];
+    localStorage.setItem("selected", JSON.stringify(selected))
     setSelected({ ...selected });
   };
 
+  const updateScramble = (e) => {
+    const scram = e.target.value.trim();
+    const re = (/^([RUF][2']? )*([RUF][2']?)$/).test(scram);
+    setScramble(scram);
+    setError(!re && (scram.length > 0));
+  }
+
   const submitScramble = () => {
     if (scramble.length > 0) {
-      setSolutions([ ...getSolutions({ scramble: scramble, 
-        egDepth: depths['EG'], 
-        tcllDepth: depths['TCLL'], 
-        lsDepth: depths['LS'], 
-      }) ]);
       setImageScramble(scramble);
+      setSubmitted(true);
+      setLoading(true);
+      setShouldUpdate(true);
     }
-    setSubmitted(true);
   };
 
   const getVars = (color) => {
@@ -325,21 +430,22 @@ function App() {
   
   return (
     <CssVarsProvider theme={appTheme} defaultMode='light'>
-      <Sheet sx={{ overflow: 'hidden', height: '100vh' }}>
-        <Stack direction="column" sx={{ overflow: 'hidden', height: '100vh' }}>
+      <Sheet sx={{ overflow: 'hidden', height: '100vh', width: '100vw' }}>
+        <HelpModal open={open} setOpen={setOpen}></HelpModal>
+        <Stack direction="column" sx={{ overflow: 'hidden', height: '100vh', maxWidth: '100vw', overflow: 'hidden' }}>
             <Sheet variant="outlined" sx={{marginBottom: '10px', boxShadow: 'sm', borderTop:'0', borderLeft: '0', borderRight: '0', backgroundColor: '', height: '50px'}}>
             <Grid container spacing={3} height="100%" margin={0} sx={{ flexGrow: 1 }}>
-              <Grid xs alignItems="center" display="flex" flexDirection="row" padding={0} paddingLeft={1}>
+              <Grid id="headerIconContainer" xs alignItems="center" display="flex" flexDirection="row" padding={0} paddingLeft={1}>
                   <ViewInArIcon color="primary"/>
                   {/* <Typography>Will Callan</Typography> */}
               </Grid>
               <Grid xs={6} padding={0} margin={0} maxHeight="100%">
-                <Stack height="100%" direction="row" justifyContent="center">
-                  <Typography alignSelf="center" level="h2" sx={(theme) => theme.typography.h0}>Two-Tool</Typography>
+                <Stack id="headerTitleContainer" height="100%" direction="row" justifyContent="center">
+                  <Typography id="headerTitle" alignSelf="center" level="h2" sx={(theme) => theme.typography.h0}>Two-Tool</Typography>
                 </Stack>
               </Grid>
-              <Grid xs maxHeight="100%">
-                <Stack height="100%" direction="row" spacing={1} justifyContent="end" alignItems="center">
+              <Grid xs maxHeight="100%" sx={{padding: '0'}}>
+                <Stack height="100%" paddingTop={0} paddingBottom={0} paddingRight={1} direction="row" spacing={1} justifyContent="end" alignItems="center">
                     <Link
                       href="https://docs.google.com/spreadsheets/d/1OFXakCV85Mp2zsQBXMxiMX9a506JeAcLnUXZr8FgXAY/edit?usp=sharing"
                       alignSelf="center"
@@ -353,26 +459,24 @@ function App() {
                       Algorithms
                     </Link>
                     <Link
-                      href="#common-examples"
+                      href="https://github.com/WACWCA/two-tool"
                       target="_blank" 
                       rel="noopener noreferrer"
                       alignSelf="center"
                       underline="none"
                       variant="outlined"
                       color="neutral"
-                      component="button"
-                      sx={{ py:0.5, px:1, borderRadius: 'md', height: '32px'}}
+                      sx={{borderRadius: 'md', boxSizing:"border-box", maxHeight: '32px', minHeight: '32px',  pl: 1, pr: 1, py: 0.5, borderRadius: 'md'}}
                     ><GitHubIcon /></Link>
                     <Link
-                      href="#common-examples"
-                      target="_blank" 
-                      rel="noopener noreferrer"
+                      href=""
                       alignSelf="center"
                       underline="none"
                       variant="outlined"
                       color="neutral"
                       component="button"
                       sx={{ py:0.5, px:1, borderRadius: 'md', height: '32px'}}
+                      onClick={() => setOpen(true)}
                     ><QuestionMarkIcon /></Link>
                     
                   </Stack>      
@@ -380,32 +484,56 @@ function App() {
               </Grid>
             </Grid>
             </Sheet>  
-          <Stack direction="row" justifyContent="center" spacing={1} sx={{overflowY: 'hidden', maxHeight: '100%'}}>
+          <Stack direction="row" flexWrap="wrap" justifyContent="center" spacing={1} sx={{overflow: 'hidden', overflowY: 'scroll', maxHeight: '100%'}}>
             <Stack direction="column">
+              <Card sx={{padding:'0px', border: '0'}}>
+                <Box height={"35px"} padding={0} display="flex" flexDirection="column" alignItems="center">
+                  {imageScramble && 
+                  <>
+                    <Typography level='body-xs' lineHeight="1">Scramble</Typography>
+                    <Typography lineHeight="1">{imageScramble}</Typography>           
+                  </>
+                  }
+                       
+                </Box>
+              </Card>
               <Box><twisty-player hint-facelets='floating' background='none' control-panel='none' alg={imageScramble} puzzle="2x2x2"></twisty-player></Box>
               <Stack variant='outlined' justifyContent="center" sx={{py: 0, display: 'flex', borderRadius: '0'}} >
-                <Link level='body-xs' marginTop={1} color="neutral" variant='outlined' textColor="primary" href="https://js.cubing.net/cubing/" target="_blank" 
-                      rel="noopener noreferrer" alignSelf="center"                       sx={{ '--Link-gap': '0.5rem', pl: 1, pr: 1, py: 0.5, borderRadius: 'md' }}
+                <Link  level='body-xs' marginTop={1} marginBottom={1} color="neutral" variant='outlined' textColor="primary" href="https://js.cubing.net/cubing/" target="_blank" 
+                      rel="noopener noreferrer" alignSelf="center"                       sx={{ opacity: '0.5', '--Link-gap': '0.5rem', pl: 1, pr: 1, py: 0.5, borderRadius: 'md' }}
                       >
                      twisty-player by Lucas Garron</Link></Stack>
             </Stack>
-            <Stack paddingRight={2} paddingY={4} spacing={1} overflow='hidden' direction="column">
+            <Box id="rightCol" display="flex" justifyContent="center" sx={{overflowY: 'scroll', maxHeight: '100%'}}>
+            <Stack alignItems="center" paddingLeft={1} paddingRight={2} spacing={1} overflow="hidden" direction="column" sx={{
+              // height: '100%'
+              maxHeight:'100%',
+              maxWidth:'360px',
+              minWidth: '300px',
+              width: "100%"
+            }}>
               <Card 
-                
                 sx={{
                 paddingBottom: "0px",
                 backgroundColor: "background.level1",
-                boxShadow: 'md'
+                boxShadow: 'md',
+                width: "100%",
+                maxWidth:'360px',
+                minWidth: '300px',
+                boxSizing: 'border-box'
                 }}>
                 <Stack direction="column" spacing={1}>
                   <Stack direction="row" spacing={1}>
-                    <Input placeholder="Scramble…" onChange={ e => setScramble(e.target.value) } />
-                    <Button onClick={submitScramble} variant='solid' endDecorator={"->"} color="primary" sx={{
-                      // border: `2px solid ${useTheme().vars.palette['success'][300]}`,
-                      // backgroundColor: useTheme().vars.palette['success'][100],
-                    }}/>
+                    <Input error={error} placeholder="Scramble…" onChange={updateScramble} fullWidth/>
+                    <IconButton disabled={error} onClick={submitScramble} variant='solid' color="primary" sx={{
+                    }}>
+                      <Search sx={{fontSize: '20px'}} />
+                    </IconButton>
                   </Stack>
-                  <MethodPicker selected={selected} click={click} defaultDepths={defaultDepths} depths={depths} setDepth={setDepth}></MethodPicker>
+                  <MethodPicker selected={selected} click={click} depths={depths} setDepth={setDepth} setDepthAndSearch={setDepthAndSearch}></MethodPicker>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    
+                  </Box>
                   <Stack direction="row" spacing={1} justifyContent="center" paddingTop={2} paddingBottom={1}>
                     { 
                       ['white', 'green', 'blue', 'red', 'orange', 'yellow'].map(color => 
@@ -416,14 +544,17 @@ function App() {
                   </Stack>
                 </Stack>
               </Card>
-              <Sheet sx={{overflowY: 'scroll', marginTop: '0px !Important'}}>
-                <Stack direction="column" spacing={1} paddingTop={1}>
-                  { solutions.filter(
+              <Sheet sx={{overflowY: 'scroll', marginTop: '0px !Important', maxWidth:'360px',
+              minWidth: '300px', width: "100%"}}>
+                <Stack direction="column" width={"100%"} spacing={1} paddingTop={1} paddingBottom={1} sx={{overflowY: 'scroll'}}>
+                  { !loading && solutions.filter(
                     solution => selected[solution.method] && checkedColorList[solution.color] && depths[solution.methodGroup] >= solution.depth && depths['ALG'] > solution.algNumber 
-                    ).slice(0, 50).map((solution, index) =>  
+                    )
+                    .slice(0, 50).map((solution, index) =>  
                     <SolutionCard key={index} color='green' {...solution} />
                     ) }
-                  { solutions.filter(
+                    {/* loading false solitions 0 submitted */}
+                  { !loading && solutions.filter(
                     solution => selected[solution.method] && checkedColorList[solution.color] && depths[solution.methodGroup] >= solution.depth && depths['ALG'] > solution.algNumber 
                     ).length === 0 && submitted && ( 
                       <Alert
@@ -440,7 +571,7 @@ function App() {
                     </Alert>
                     ) }
                   {
-                    !submitted && (
+                    !loading && !submitted && (
                       <Alert
                       sx={{ alignItems: 'flex-start' }}
                       variant="soft"
@@ -451,15 +582,25 @@ function App() {
                         <Typography level="body-sm" color='success'>
                           Pick methods and more with the Settings button
                         </Typography>
+                        <SkeletonSolutionCard />
                       </div>
                     </Alert>
                     )
                   }
+                  {
+                    loading &&
+                      (<Stack direction="column" spacing={1} paddingTop={1}>
+                        { [...Array(10)].map((x,y)=> (
+                          <SkeletonSolutionCard key={y}></SkeletonSolutionCard>
+                        ))}
+                      </Stack>)
+                  }
                 </Stack>
               </Sheet>
               
-            </Stack>
           </Stack>
+            </Box>
+            </Stack>
         </Stack>
         
       </Sheet>

@@ -1,8 +1,22 @@
-import { METHODS, METHOD_DATA, OPPOSITE_COLOR, getMethodGroup, moves } from "./constants";
-import { MOVE_FUNCTIONS, F, F2, FP, R, R2, RP, U, U2, UP, X, X2, XP, Y, Y2, YP, Z, ZP } from "./stickerMapper";
+importScripts("constants.js");
+importScripts("stickerMapper.js");
+
+// import { METHODS, METHOD_DATA, OPPOSITE_COLOR, getMethodGroup, moves } from "./constants";
+// import { MOVE_FUNCTIONS, F, F2, FP, R, R2, RP, U, U2, UP, X, X2, XP, Y, Y2, YP, Z, ZP } from "./stickerMapper";
+
+// import { METHODS, METHOD_DATA, OPPOSITE_COLOR, getMethodGroup, moves } from "./constants";
+// import METHODS from "./constants";
+
+// import { MOVE_FUNCTIONS, F, F2, FP, R, R2, RP, U, U2, UP, X, X2, XP, Y, Y2, YP, Z, ZP } from "./stickerMapper";
 
 
-export const getSolutions = ({scramble, egDepth, tcllDepth, lsDepth}) => {
+self.addEventListener("message", async function(event) {
+    const data = JSON.parse(event.data);
+    self.postMessage(JSON.stringify(getSolutions(data)));
+    // self.close();
+});
+
+const getSolutions = ({scramble, egDepth, tcllDepth, lsDepth}) => {
     let stickers = [
         [0, 1, 2, 3],
         [4, 5, 6, 7],
@@ -18,7 +32,7 @@ export const getSolutions = ({scramble, egDepth, tcllDepth, lsDepth}) => {
         TCLL: tcllDepth,
         LS: lsDepth
     };
-    console.log(depths);
+    // console.log(depths);
 
     scramble.split(' ').forEach(move => {
         stickers = stickers.map((color) => color.map(elem => MOVE_FUNCTIONS[move](elem)));
@@ -39,14 +53,16 @@ export const getSolutions = ({scramble, egDepth, tcllDepth, lsDepth}) => {
     const green = getSolutionsForColor(state, 'g', depths);
     const red = getSolutionsForColor(state, 'r', depths);
     const yellow = getSolutionsForColor(state, 'y', depths);
+    // const yellow = getSolutionsForColor(state, color, depths);
 
-    const all = new Set([ ...white, ...blue, ...orange, ...green, ...red, ...yellow]);
+
+    const all = new Set([...white, ...blue, ...orange, ...green, ...red, ...yellow]);
     const clean = new Set();
-    console.log("original: ", all.size);
+    // console.log("original: ", all.size);
     all.forEach(elem => { 
         // if (elem.color === 'b' && elem.rotation_1 === 'Z' && elem.rotation_2 === 'Y\'' && elem.moves.length === 4 && elem.methodGroup === 'TCLL') {
         //     console.log("found it");
-        //     console.log(elem);
+        //     data(elem);
         // } 
         const temp = updateSolution(state, elem, depths);
         if (temp.length > 0) {
@@ -57,11 +73,11 @@ export const getSolutions = ({scramble, egDepth, tcllDepth, lsDepth}) => {
                 } 
             });
         } else {
-            // console.log(elem);
+            // data(elem);
         }
     });
     let arr = [ ...clean ];
-    console.log("clean: ", arr.length);
+    // data("clean: ", arr.length);
     arr.sort((a, b) => { 
         let xx = getDepth(a.face.split(' ')) + getDepth(a.alg.split(' ')) - getDepth(b.face.split(' ')) - getDepth(b.alg.split(' '));
 
@@ -82,10 +98,11 @@ export const getSolutions = ({scramble, egDepth, tcllDepth, lsDepth}) => {
         }
     });
     
-    console.log("Maximized", arr.length);
+    // console.log("Maximized", arr.length);
     // arr.forEach(e => {
     //     console.log(e.solution);
     // });
+
     return arr;
 }
 
@@ -125,7 +142,7 @@ const getSolutionsForColor = (state, color, depths) => {
     return solutions;
 }
 
-export const performSearch = (stickers, r1, r2, solutions, color, depths) => {
+const performSearch = (stickers, r1, r2, solutions, color, depths) => {
 
     let backNet = getInitialBackNet();
     let frontier = new Set();
@@ -135,7 +152,7 @@ export const performSearch = (stickers, r1, r2, solutions, color, depths) => {
     });
     let backNetFrontier = getInitialBackFrontier();
     lookForFace(solutions, backNet, [...frontier][0], r1, r2, color);
-    console.log(solutions);
+    // console.log(solutions);
 
 
     for (let iteration = 1; iteration <= (depths.maxDepth + 1) / 2; iteration++) {
@@ -716,7 +733,7 @@ const matchAndApplyAlgorithm = (solution) => {
         const aufs = ['', 'U', 'U2', 'U\''];
         const solutions = [];
         if (solution.color === 'y' && solution.methodGroup==='EG' && solution.moves.length < 2) {
-            console.log(solution);
+            // console.log(solution);
         }
         aufs.forEach(auf => {
             if (!identified) {

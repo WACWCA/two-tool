@@ -1,16 +1,6 @@
-export const R = "R";
-export const R2 = "R2";
-export const RP = "R'";
-export const F = "F";
-export const F2 = "F2";
-export const FP = "F'";
-export const U = "U";
-export const U2 = "U2";
-export const UP = "U'";
+const moves = ['R', 'R2', 'R\'', 'F', 'F2', 'F\'', 'U', 'U2', 'U\''];
 
-export const moves = [R, R2, RP, F, F2, FP, U, U2, UP];
-
-export const METHODS = {
+const METHODS = {
     CLL: 'CLL',
     EG1: 'EG-1',
     EG2: 'EG-2',
@@ -28,7 +18,7 @@ export const METHODS = {
     LS9: 'LS9'
 };
 
-export const getMethodGroup = (method) => {
+const getMethodGroup = (method) => {
     switch (method) {
         case METHODS.CLL:
         case METHODS.EG1:
@@ -54,7 +44,7 @@ export const getMethodGroup = (method) => {
     }
 }
 
-export const COLORS = {
+const COLORS = {
     WHITE: 'w',
     YELLOW: 'y',
     BLUE: 'b',
@@ -63,7 +53,7 @@ export const COLORS = {
     RED: 'r',
 };
 
-export const OPPOSITE_COLOR = {
+const OPPOSITE_COLOR = {
     [COLORS.WHITE]: COLORS.YELLOW,
     [COLORS.YELLOW]: COLORS.WHITE,
     [COLORS.BLUE]: COLORS.GREEN,
@@ -72,7 +62,7 @@ export const OPPOSITE_COLOR = {
     [COLORS.ORANGE]: COLORS.RED
 };
 
-export const METHOD_DATA = {
+const METHOD_DATA = {
     CLL: [
         {
             NICKNAME: 'PBL',

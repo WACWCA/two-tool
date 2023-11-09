@@ -5,7 +5,7 @@ import { TwistyPlayer } from "https://cdn.cubing.net/js/cubing/twisty";
 import { useState } from "react";
 
 
-const MethodPicker = ({selected, click, depths, defaultDepths, setDepth}) => {
+const MethodPicker = ({selected, click, depths, setDepth, setDepthAndSearch}) => {
     const { mode, systemMode } = useColorScheme();
     const theme = useTheme();
 
@@ -70,7 +70,7 @@ const MethodPicker = ({selected, click, depths, defaultDepths, setDepth}) => {
         <MenuButton color="primary">
             Settings
         </MenuButton>
-        <Menu placement="bottom" color="primary" variant="outlined" size="lg" sx={{padding:"0"}}>
+        <Menu placement="bottom" color="primary" variant="outlined" size="lg" sx={{padding:"0", overflow:"scroll"}}>
             <Sheet sx={{backgroundColor: "transparent", padding:"0"}}>
                 <Stack direction='column' paddingTop={1} spacing={1}>
                     <Divider sx={{paddingLeft:'10px', paddingRight:'10px'}}>
@@ -98,6 +98,7 @@ const MethodPicker = ({selected, click, depths, defaultDepths, setDepth}) => {
                                         variant="solid"
                                         valueLabelDisplay="off"
                                         onChange={(e, value) => setDepth("EG", value)}
+                                        onChangeCommitted={(e, value) => setDepthAndSearch("EG", value)}
                                         sx={{ maxWidth: "150px",
                                         padding: "0",
                                         "& > .MuiSlider-valueLabelOpen": {
@@ -136,6 +137,7 @@ const MethodPicker = ({selected, click, depths, defaultDepths, setDepth}) => {
                                         variant="solid"
                                         valueLabelDisplay="off"
                                         onChange={(e, value) => setDepth("TCLL", value)}
+                                        onChangeCommitted={(e, value) => setDepthAndSearch("TCLL", value)}
                                         sx={{ maxWidth: "150px",
                                         padding: "0",
                                         "& > .MuiSlider-valueLabelOpen": {
@@ -181,6 +183,7 @@ const MethodPicker = ({selected, click, depths, defaultDepths, setDepth}) => {
                                         variant="solid"
                                         valueLabelDisplay="off"
                                         onChange={(e, value) => setDepth("LS", value)}
+                                        onChangeCommitted={(e, value) => setDepthAndSearch("LS", value)}
                                         sx={{ maxWidth: "150px",
                                         padding: "0",
                                         "& > .MuiSlider-valueLabelOpen": {
