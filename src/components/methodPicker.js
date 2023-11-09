@@ -70,7 +70,7 @@ const MethodPicker = ({selected, click, depths, setDepth, setDepthAndSearch}) =>
         <MenuButton color="primary">
             Settings
         </MenuButton>
-        <Menu placement="bottom" color="primary" variant="outlined" size="lg" sx={{padding:"0", overflow:"scroll"}}>
+        <Menu placement="bottom" color="primary" variant="outlined" size="lg" sx={{padding:"0"}}>
             <Sheet sx={{backgroundColor: "transparent", padding:"0"}}>
                 <Stack direction='column' paddingTop={1} spacing={1}>
                     <Divider sx={{paddingLeft:'10px', paddingRight:'10px'}}>
