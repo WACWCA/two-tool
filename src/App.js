@@ -140,7 +140,9 @@ function App() {
     ;
     localStorage.setItem('depths', JSON.stringify(d));
     setDepths(d)
-    setShouldUpdate(true);
+    if (imageScramble) {
+      setShouldUpdate(true);
+    }
   }
 
   useEffect(() => {
@@ -156,6 +158,7 @@ function App() {
       const fetchData = async () => {
         const x = await solve(imageScramble);
       }
+      if (imageScramble)
       fetchData()
         .catch(console.error);
     }
