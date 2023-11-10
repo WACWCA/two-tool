@@ -156,7 +156,7 @@ function App() {
       setLoading(true);
       setShouldUpdate(false);
       const fetchData = async () => {
-        const x = await solve(imageScramble);
+        const x = await solve(imageScramble.replaceAll("’", "'"));
       }
       if (imageScramble)
       fetchData()
@@ -172,14 +172,14 @@ function App() {
 
   const updateScramble = (e) => {
     const scram = e.target.value.trim();
-    const re = (/^([RUF][2']? )*([RUF][2']?)$/).test(scram);
+    const re = (/^([RUF][2'’]? )*([RUF][2'’]?)$/).test(scram);
     setScramble(scram);
     setError(!re && (scram.length > 0));
   }
 
   const submitScramble = () => {
     if (scramble.length > 0) {
-      setImageScramble(scramble);
+      setImageScramble(scramble.replaceAll("’", "'"));
       setSubmitted(true);
       setLoading(true);
       setShouldUpdate(true);

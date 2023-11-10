@@ -67,7 +67,7 @@ const SolutionCard = ({color, subset, inspection, face, alg, method, depth, algN
                             <Stack direction="row" spacing={1} alignItems="center">
                                 <Sheet className="circle" sx={{borderColor: bgColor + ' !important', outline: color === 'white' ? '1px solid black' : 'none', backgroundColor: color === 'white' ? 'black !important' : 'none'}}></Sheet>
                                 <Typography level="body-sm">
-                                    {face} {faceScore}
+                                    {face}
                                 </Typography>
                             </Stack>
                             <Typography level="body-sm">
