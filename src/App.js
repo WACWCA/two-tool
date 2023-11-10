@@ -4,7 +4,6 @@ import SolutionCard from './components/solutionCard';
 import { Alert, Box, Button, Card, CardContent, CssVarsProvider, FormControl, FormHelperText, FormLabel, Grid, IconButton, Input, Link, Radio, RadioGroup, Sheet, Stack, Typography} from '@mui/joy';
 import { extendTheme, useTheme } from '@mui/joy/styles';
 import { getSolutions } from './util/solver';
-import { TwistyPlayer } from "https://cdn.cubing.net/js/cubing/twisty";
 import MethodPicker from './components/methodPicker';
 import FaceColorButton from './components/FaceColorButton';
 import ViewListIcon from '@mui/icons-material/ViewList';

@@ -1,7 +1,6 @@
 import { chipClasses, Avatar, Button, Card, CardOverflow, Checkbox, Chip, Dropdown, IconButton, Link, ListItemDecorator, Menu, MenuButton, MenuItem, Sheet, Stack, Typography, checkboxClasses, useColorScheme, Slider, Divider } from "@mui/joy";
 import { METHODS } from "../util/constants";
 import { useTheme } from "@mui/joy";
-import { TwistyPlayer } from "https://cdn.cubing.net/js/cubing/twisty";
 import { useState } from "react";
 
 
