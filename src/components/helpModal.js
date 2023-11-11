@@ -28,10 +28,10 @@ const HelpModal = ({ open, setOpen }) => {
             mb={1}
             sx={(theme) => theme.typography.h0}
           >
-            Two-Tool
+            Two-Tools.com
           </Typography>
           <Typography id="modal-desc" textColor="text.tertiary">
-            Two-tool helps find practical solutions to any 2x2 scramble
+            Two-tools helps find practical solutions to any 2x2 scramble
           </Typography>
         </Sheet>
     </Modal>);

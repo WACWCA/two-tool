@@ -443,7 +443,7 @@ function App() {
               </Grid>
               <Grid xs={6} padding={0} margin={0} maxHeight="100%">
                 <Stack id="headerTitleContainer" height="100%" direction="row" justifyContent="center">
-                  <Typography id="headerTitle" alignSelf="center" level="h2" sx={(theme) => theme.typography.h0}>Two-Tool</Typography>
+                  <Typography id="headerTitle" alignSelf="center" level="h2" sx={(theme) => theme.typography.h0}>Two-Tools</Typography>
                 </Stack>
               </Grid>
               <Grid xs maxHeight="100%" sx={{padding: '0'}}>
