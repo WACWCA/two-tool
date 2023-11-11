@@ -37,18 +37,18 @@ function App() {
         'CLL': true,
         'EG-1': true,
         'EG-2': true,
-        'LEG-1': true,
-        'TCLL+': true,
-        'TCLL-': true,
-        'LS1': true,
-        'LS2': true,
-        'LS3': true,
-        'LS4': true,
-        'LS5': true,
-        'LS6': true,
-        'LS7': true,
-        'LS8': true,
-        'LS9': true
+        'LEG-1': false,
+        'TCLL+': false,
+        'TCLL-': false,
+        'LS1': false,
+        'LS2': false,
+        'LS3': false,
+        'LS4': false,
+        'LS5': false,
+        'LS6': false,
+        'LS7': false,
+        'LS8': false,
+        'LS9': false
       };
     }
     );
@@ -129,6 +129,7 @@ function App() {
 
     localStorage.setItem('depths', JSON.stringify(d));
     setDepths(d);
+    console.log(d);
   }
 
   const setDepthAndSearch = (group, depth) => {
@@ -143,6 +144,8 @@ function App() {
     if (imageScramble) {
       setShouldUpdate(true);
     }
+    console.log(d);
+
   }
 
   useEffect(() => {
