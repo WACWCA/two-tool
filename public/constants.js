@@ -196,7 +196,7 @@ const METHOD_DATA = {
             3: ["U' F R' F U' F2 R U R"],
             2: ["U' R U' R' U R U' R' F R U' R'"],
             4: ["U F U' R U2 R' F' R U R' F'", "R U' R2 F R U R U' R' U' R' F R F' "],
-            5: ["F R U' R' F R U2 R' U F'", "(U') R' F' R U' R' F R2 U R' F' R U R'"]
+            5: ["F R U' R' F R U2 R' U F'", "U' R' F' R U' R' F R2 U R' F' R U R'"]
         },
         {
             NICKNAME: 'U',
