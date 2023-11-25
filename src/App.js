@@ -20,7 +20,6 @@ import SkeletonSolutionCard from './components/skeletonSolutionCard';
 import HelpModal from './components/helpModal';
 
 function App() {
-  // U' F R' U R' F U F U2
   const [algSorter, setAlgSorter] = useState(undefined);
   const [solutions, setSolutions] = useState([]);
 
@@ -57,17 +56,6 @@ function App() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // useEffect(() => {
-  //   const sols = [...redSolutions, ...orangeSolutions, ...greenSolutions, ...blueSolutions, ...yellowSolutions, ...whiteSolutions]
-  //   if (solutions.length > 0) {
-  //       setShouldUpdate(false);
-  //       setLoading(false);
-  //   }  
-  //   setSolutions(sols);    
-  // }, [
-  //   redSolutions, orangeSolutions, greenSolutions, blueSolutions, yellowSolutions, whiteSolutions
-  // ]);
-
   const colorClick = (b, color) => {
     setCheckedColorList({
       ...checkedColorList,
@@ -101,7 +89,6 @@ function App() {
 
   const receiveWorker = (message) => {
     const workerResponse = JSON.parse(message.data);
-    console.log(workerResponse);
     workerResponse.sort((a, b) => algSorter.getScore(a) - algSorter.getScore(b));
 
     setShouldUpdate(false);
@@ -109,12 +96,6 @@ function App() {
     setSolutions(workerResponse);
 
   }
-
-  // useEffect(()=> {
-  //   console.log(solutions.length);
-  //   setShouldUpdate(false);
-  //   setLoading(false);
-  // }, [solutions]);
 
   const worker = new Worker("worker.js");
   worker.addEventListener('message', receiveWorker);
@@ -129,7 +110,6 @@ function App() {
 
     localStorage.setItem('depths', JSON.stringify(d));
     setDepths(d);
-    console.log(d);
   }
 
   const setDepthAndSearch = (group, depth) => {
@@ -144,8 +124,6 @@ function App() {
     if (imageScramble) {
       setShouldUpdate(true);
     }
-    console.log(d);
-
   }
 
   useEffect(() => {
@@ -204,17 +182,10 @@ function App() {
       plainActiveBg: `var(--joy-palette-${color}-100)`, 
     }
   }
-
   const appTheme = extendTheme({
     typography: {
       h0: {
-        // `--joy` is the default CSS variable prefix.
-        // If you have a custom prefix, you have to use it instead.
-        // For more details about the custom prefix, go to https://mui.com/joy-ui/customization/using-css-variables/#custom-prefix
-        // background:
-        //   'linear-gradient(90deg, var(--joy-palette-blue-700), var(--joy-palette-blue-300))',
         background: 'var(--joy-palette-blue-700)',
-        // `Webkit*` properties must come later.
         WebkitBackgroundClip: 'text',
         WebkitTextFillColor: 'transparent'
       },
@@ -222,54 +193,6 @@ function App() {
     colorSchemes: {
       light: {
         palette: {
-          // primary: {
-          //   50: "#e1f5fe",
-          //   100: "#b3e5fc",
-          //   200: "#81d4fa",
-          //   300: "#4fc3f7",
-          //   400: "#29b6f6",
-          //   500: "#03a9f4",
-          //   600: "#039be5",
-          //   700: "#0288d1",
-          //   800: "#0277bd",
-          //   900: "#01579b"
-          // },
-          // danger: {
-          //   50: "#fef2f2",
-          //   100: "#fee2e2",
-          //   200: "#fecaca",
-          //   300: "#fca5a5",
-          //   400: "#f87171",
-          //   500: "#ef4444",
-          //   600: "#dc2626",
-          //   700: "#b91c1c",
-          //   800: "#991b1b",
-          //   900: "#7f1d1d"
-          // },
-          // success: {
-          //   50: "#f0fdf4",
-          //   100: "#dcfce7",
-          //   200: "#bbf7d0",
-          //   300: "#86efac",
-          //   400: "#4ade80",
-          //   500: "#22c55e",
-          //   600: "#16a34a",
-          //   700: "#15803d",
-          //   800: "#166534",
-          //   900: "#14532d"
-          // },
-          // warning: {
-          //   50: "#fefce8",
-          //   100: "#fef9c3",
-          //   200: "#fef08a",
-          //   300: "#fde047",
-          //   400: "#facc15",
-          //   500: "#eab308",
-          //   600: "#ca8a04",
-          //   700: "#a16207",
-          //   800: "#854d0e",
-          //   900: "#713f12",
-          // },
           blue: {
             50: "#e2f2ff",
             100: "#baddff",
