@@ -126,7 +126,7 @@ const METHOD_DATA = {
             4: ["F R U' R' U' R U R' F'", "U' R U R U' R' F R' F'", "U F' R U R' U' R' F R", "F R2 F' U2 R' U' R", "R' F R y' U R U' R'"],
             2: ["F R' F' R U R U' R'", "F R' F' R U R U' R'", "U2 L' U' L' U L F' L F", "F R' F' U' R' U R", "U2 R' U2 R U2 F R F'"],
             1: ["R U2 R2 F R F' R U2 R'", "U' R U2 R' F R' F' R2 U2 R'", "U2 R' U' R U R' F' R U R' U' R' F R2", "U2 R' F2 R F' R U R2 F2 R", "U R' F2 R2 U' R' F R' F2 R"],
-            0: ["U R' U R' U2 R U' R' U R U' R2", "U2 R2 U R' U' R U R' U2 R U' R"],
+            0: ["U R' U R' U2 R U' R' U R U' R2", "U2 R2 U R' U' R U R' U2 R U' R", "U R2 U' R U2 R' U2 R U' R2"],
             3: ["U' R U' R' U R U' R' F R' F' R2 U R'", "R U R' U' R' F R2 F' U' R' U' R", "U R U' R' F R' F' R2 U R' U' R' F R F'", "U' F R2 F' U' R' U' R2 U R' U' R'"],
             5: ["R' U' R U2 R' F R' F' R U' R", "U' R' F' R U R' U' R' F R2 U' R' U2 R", "U2 R' F R U' R' F R F' R U R2 F' R", "U' F R F' R U R2 U' R' F R F'", "U2 R U R' U R' F R F' U2 R' F R F'"]
         },
@@ -910,7 +910,7 @@ const METHOD_DATA = {
         {
             NICKNAME: 'Sune-A',
             OLL: [2, 5, 9, 21],
-            WRAPPER: [8, 20, 3, 12, 1, 22, 5, 17],
+            WRAPPER: [8, 20, 3, 12, 1, 22, 11, 17],
             0: "F R U2 R' U R U' R' F",
             1: "R U2 R2 F2 R U2 R U' R' F",
             2: "R U R' F R' F' R",
@@ -921,7 +921,7 @@ const METHOD_DATA = {
         {
             NICKNAME: 'Sune-B',
             OLL: [3, 5, 17, 21],
-            WRAPPER: [2, 9, 20, 12, 1, 22, 5, 8],
+            WRAPPER: [2, 9, 20, 12, 1, 22, 11, 8],
             0: "U2 y' R2 F R F' U R U2 R' U R",
             1: "U2 y F' R U' R' U' R U' R'",
             2: "U2 y' R U' R2 U' R2 U R'",
@@ -932,7 +932,7 @@ const METHOD_DATA = {
         {
             NICKNAME: 'Sune-C',
             OLL: [1, 5, 9, 17],
-            WRAPPER: [2, 20, 3, 21, 12, 22, 5, 8],
+            WRAPPER: [2, 20, 3, 21, 12, 22, 11, 8],
             0: "U' F R' F' R U' R U R' U R U' R'",
             1: "R U' R' U R U' R' U' R' F R F'",
             2: "F R' F' R U' R U2 R' F R' F' R",
@@ -943,7 +943,7 @@ const METHOD_DATA = {
         {
             NICKNAME: 'Pi-A',
             OLL: [5, 12, 17, 20],
-            WRAPPER: [2, 3, 9, 1, 21, 22, 5, 8],
+            WRAPPER: [2, 3, 9, 1, 21, 22, 11, 8],
             0: "U y R' F' R U2 F' R U R'",
             1: "U2 y F' R U R2 F' R U' R' F2 R",
             2: "U y R' F' R U R' F' R U2 R' F' R",
@@ -954,7 +954,7 @@ const METHOD_DATA = {
         {
             NICKNAME: 'Pi-B',
             OLL: [5, 8, 20, 21],
-            WRAPPER: [17, 3, 9, 12, 1, 22, 5, 2],
+            WRAPPER: [17, 3, 9, 12, 1, 22, 11, 2],
             0: "R U2 R' U R U' R' F R' F' R",
             1: "U F2 R F2 R' F2 U R'",
             2: "U2 y F' R U R' U2 R' F R F' R U R'",
@@ -965,7 +965,7 @@ const METHOD_DATA = {
         {
             NICKNAME: 'U',
             OLL: [2, 3, 5, 12],
-            WRAPPER: [8, 9, 20, 1, 21, 22, 5, 17],
+            WRAPPER: [8, 9, 20, 1, 21, 22, 11, 17],
             0: "U' R U' R' U R' F R F' R U R'",
             1: "U2 F R' F' R2 U' R' U R U' R'",
             2: "y' R U' R U R' U R'",
@@ -976,7 +976,7 @@ const METHOD_DATA = {
         {
             NICKNAME: 'L',
             OLL: [1, 2, 5, 20],
-            WRAPPER: [8, 3, 9, 21, 12, 22, 5, 17],
+            WRAPPER: [8, 3, 9, 21, 12, 22, 11, 17],
             0: "U2 y' R' F R' F' R U R U' R' U' R",
             1: "U' R2 F R F' R' U' R2",
             2: "U R U' R' U R' F R F'",
@@ -987,7 +987,7 @@ const METHOD_DATA = {
         {
             NICKNAME: 'T',
             OLL: [1, 3, 5, 8],
-            WRAPPER: [17, 9, 20, 21, 12, 22, 5, 2],
+            WRAPPER: [17, 9, 20, 21, 12, 22, 11, 2],
             0: "R U' R' U' R' F R F'",
             1: "U y' F R F' U R' U' R",
             2: "U' R2 U' R' F R' F'",
@@ -998,7 +998,7 @@ const METHOD_DATA = {
         {
             NICKNAME: 'H',
             OLL: [5, 8, 9, 12],
-            WRAPPER: [17, 20, 3, 1, 20, 22, 5, 2],
+            WRAPPER: [17, 20, 3, 1, 20, 22, 11, 2],
             0: "U y F' R U' R' F U2 R' F R F'",
             1: "y' R' F2 R U R' U2 F R",
             2: "U2 y R' F' R U R' U' R U' R' U2 R",
@@ -1450,9 +1450,9 @@ const METHOD_DATA = {
             OLL: [3, 8, 21, 22],
             WRAPPER: [17, 9, 20, 12, 1, 11, 5, 2],
             0: "y' F R F' R U R' U R' U2 R'",
-            1: "y R U2 R' U R' F2 R F' ",
-            2: "y R U' R' F R' F2 R",
-            3: "U y R' F U' R U' R' U2 R",
+            1: "y R U2 R' U R' F2 R F'",
+            2: "y U R' F U' R U' R' U2 R",
+            3: "y R U' R' F R' F2 R",
             4: "U R U' R' U R U R'",
             5: "y R' F2 R F' R U R' U' R' F R"
         },
