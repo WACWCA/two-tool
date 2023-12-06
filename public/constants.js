@@ -252,8 +252,8 @@ const METHOD_DATA = {
             1: ["R2 F2 R2"],
             2: ["U R' U R' F2 R F' R", "U' R U' R F2 R' U R'"],
             3: ["U' R' U R' F2 R F' R", "U R U' R F2 R' U R'"],
-            4: ["U2 R' U R' F2 R F' R", "R U' R F2 R' U R'"],
-            5: ["R' U R' F2 R F' R", "U2 R U' R F2 R' U R'"]
+            4: ["R' U R' F2 R F' R", "U2 R U' R F2 R' U R'"],
+            5: ["U2 R' U R' F2 R F' R", "R U' R F2 R' U R'"]
         },
         {
             NICKNAME: 'Sune',
