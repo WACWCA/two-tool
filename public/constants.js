@@ -656,8 +656,8 @@ const METHOD_DATA = {
             1: "U2 R U' F R' F' R U R' U' R2",
             2: "U y R' F R U' R' F R U' R' F R",
             3: "U R F2 R F2 R' F2",
-            4: "U R2 F R F' U R U2 R' U2 R'",
-            5: "U2 R U' R U R' U R U2 R2",
+            4: "U2 R U' R U R' U R U2 R2",
+            5: "U R2 F R F' U R U2 R' U2 R'",
         },
         {
             NICKNAME: 'L-A',
